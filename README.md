@@ -1,10 +1,10 @@
 # Projeto-2
  
-Instalar three.js
+## Instalação e Execução
+
+### Instalar three.js
+```bash
 npm install --save three
-Instalar cannon-es
 npm install cannon-es
-Instalar Vite
 npm install --save-dev vite
-Rode o código
 npx vite
