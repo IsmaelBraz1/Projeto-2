@@ -1,12 +1,12 @@
 import * as THREE from 'three';
+import * as CANNON from 'cannon-es';
 import { setupScene } from './sceneSetup.js';
 import { createCenario } from './cenario.js';
 import { createCylinder } from './arma.js';
 import { setupPhysics } from './physics.js';
 import { setupControls } from './controls.js';
 import { createStructure1 } from './Estrutura1.js';
-import * as CANNON from 'cannon-es';
-
+import { createExplosion} from './particleSystem.js'; 
 const { scene, camera, renderer } = setupScene();
 const { groundMesh } = createCenario(scene);
 const { baseMesh, cylinderMesh } = createCylinder(scene);
@@ -24,6 +24,7 @@ function calculateLaunchDirection() {
 }
 
 window.addEventListener('click', () => {
+    console.log("Mouse click detected");
     const position = cylinderMesh.position.clone();
     position.add(new THREE.Vector3(0, cylinderMesh.geometry.parameters.height / 2, 0).applyQuaternion(cylinderMesh.quaternion));
 
@@ -35,7 +36,7 @@ window.addEventListener('click', () => {
 
     const newSphereShape = new CANNON.Sphere(0.5);
     const newSphereBody = new CANNON.Body({
-        mass: 0.5,
+        mass: 0.2,
         shape: newSphereShape,
         position: new CANNON.Vec3(position.x, position.y, position.z)
     });
@@ -48,9 +49,21 @@ window.addEventListener('click', () => {
     newSphereBody.applyForce(force, new CANNON.Vec3(0, 0, 0));
 
     newSpheres.push({ mesh: newSphereMesh, body: newSphereBody });
+    console.log("New sphere created and added to the scene");
+     //temporizador para remover a bola após 3 segundos
+     setTimeout(() => {
+        scene.remove(newSphereMesh);
+        world.removeBody(newSphereBody);
+        const index = newSpheres.indexOf({ mesh: newSphereMesh, body: newSphereBody });
+        if (index > -1) {
+            newSpheres.splice(index, 1);
+        }
+        console.log("Sphere removed after 3 seconds");
+    }, 2000);
 });
 
 function animate() {
+    console.log("Animation frame started");
     world.step(timeStep);
 
     groundMesh.position.copy(groundBody.position);
@@ -62,16 +75,40 @@ function animate() {
     });
 
     if (currentStructure) {
+        const blocksToRemove = [];
+
         currentStructure.cubes.forEach((mesh, index) => {
             const body = currentStructure.cubeBodies[index];
             mesh.position.copy(body.position);
             mesh.quaternion.copy(body.quaternion);
+
+            // Verificar colisões com esferas
+            newSpheres.forEach(({ body: sphereBody }) => {
+                if (body.position.distanceTo(sphereBody.position) < 1) {
+                    console.log("Collision detected at position:", body.position);
+                    // Acionar sistema de partículas
+                    const particleSystem = createExplosion(body.position, scene);
+                    console.log("Explosion triggered at position", body.position);
+                  // destroyBlock(scene);
+                    // Adicionar bloco à lista para remoção
+                    blocksToRemove.push(index);
+                }
+            });
+        });
+
+        // Remover blocos fora do laço de iteração
+        blocksToRemove.forEach(index => {
+            scene.remove(currentStructure.cubes[index]);
+            world.removeBody(currentStructure.cubeBodies[index]);
+            currentStructure.cubes.splice(index, 1);
+            currentStructure.cubeBodies.splice(index, 1);
         });
     }
 
     updateControls();
 
     renderer.render(scene, camera);
+    console.log("Animation frame rendered");
 }
 
 renderer.setAnimationLoop(animate);

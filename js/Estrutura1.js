@@ -28,7 +28,7 @@ export function createStructure1(scene, world) {
 
             const cubeShape = new CANNON.Box(new CANNON.Vec3(cubeSize / 2, cubeSize / 2, cubeSize / 2));
             const cubeBody = new CANNON.Body({
-                mass: 1,
+                mass: 0.8,
                 position: new CANNON.Vec3(j * (cubeSize + spacing), i * (cubeSize + spacing), 0),
                 shape: cubeShape,
                 material: defaultMaterial
