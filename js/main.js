@@ -6,16 +6,72 @@ import { createCylinder } from './arma.js';
 import { setupPhysics } from './physics.js';
 import { setupControls } from './controls.js';
 import { createStructure1 } from './Estrutura1.js';
+import { remove1 } from './Estrutura1.js';
+import { createStructure2 } from './tiroaoAlvo.js';
+import { remove2 } from './tiroaoAlvo.js';
+import { moviPecas } from './tiroaoAlvo.js';
 import { createExplosion} from './particleSystem.js'; 
+import { atualiScore } from './particleSystem.js';
 const { scene, camera, renderer } = setupScene();
 const { groundMesh } = createCenario(scene);
 const { baseMesh, cylinderMesh } = createCylinder(scene);
 const { world, groundBody } = setupPhysics();
 const updateControls = setupControls(camera, baseMesh, cylinderMesh);
 
+
 const timeStep = 1 / 60;
 const newSpheres = [];
-let currentStructure = createStructure1(scene, world);
+let currentStructure;
+
+var atual;
+
+document.getElementById("botao1").addEventListener('click', () =>{
+    atual = 0;
+    document.getElementById("botao2").style.visibility = 'hidden';
+    document.getElementById("botao1").style.visibility = 'hidden';
+    document.getElementById("botao3").style.visibility = 'visible';
+    document.getElementById("myCanvas").style.visibility = 'hidden';
+    document.getElementById("score").style.visibility = 'visible';
+    currentStructure = createStructure1(scene, world);
+    renderer.setAnimationLoop(animate);
+});
+
+document.getElementById("botao2").addEventListener('click', () =>{
+    atual = 1;
+    document.getElementById("botao2").style.visibility = 'hidden';
+    document.getElementById("botao1").style.visibility = 'hidden';
+    document.getElementById("botao3").style.visibility = 'visible';
+    document.getElementById("myCanvas").style.visibility = 'hidden';
+    document.getElementById("score").style.visibility = 'visible';
+    currentStructure = createStructure2(scene, world);
+    renderer.setAnimationLoop(animate);
+});
+
+document.getElementById("botao3").addEventListener('click', () =>{
+    document.getElementById("botao2").style.visibility = 'visible';
+    document.getElementById("botao1").style.visibility = 'visible';
+    document.getElementById("botao3").style.visibility = 'hidden';
+    document.getElementById("myCanvas").style.visibility = 'visible';
+    document.getElementById("score").style.visibility = 'hidden';
+    renderer.setAnimationLoop(null);
+    currentStructure = [];
+    atualiScore(0);
+    document.getElementById('score').innerText = `Pontuação: 0`;
+    
+    verAtual();
+});
+
+function verAtual(){
+    if(atual == 0){
+        const agora = remove1(scene, world);
+    }else{
+        if(atual == 1){
+           const agora = remove2(scene, world);
+        }
+    }
+}
+
+
 function calculateLaunchDirection() {
     const direction = new THREE.Vector3(0, 1, 0);
     direction.applyQuaternion(cylinderMesh.quaternion);
@@ -62,8 +118,10 @@ window.addEventListener('click', () => {
 });
 
 function animate() {
-    console.log("Animation frame started");
+   // console.log("Animation frame started");
     world.step(timeStep);
+
+    moviPecas();
 
     groundMesh.position.copy(groundBody.position);
     groundMesh.quaternion.copy(groundBody.quaternion);
@@ -91,6 +149,10 @@ function animate() {
                   // destroyBlock(scene);
                     // Adicionar bloco à lista para remoção
                     blocksToRemove.push(index);
+
+                    sphereBody.position = (999,999,999);
+                  
+                    world.removeBody(sphereBody);
                 }
             });
         });
@@ -102,12 +164,12 @@ function animate() {
             currentStructure.cubes.splice(index, 1);
             currentStructure.cubeBodies.splice(index, 1);
         });
+
     }
 
     updateControls();
 
     renderer.render(scene, camera);
-    console.log("Animation frame rendered");
+    //console.log("Animation frame rendered");
 }
 
-renderer.setAnimationLoop(animate);

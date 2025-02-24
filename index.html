@@ -4,11 +4,22 @@
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
 		<style>
-			body { margin: 0; }
+			body {
+				margin: 0;
+			}
 		</style>
+		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="./css/style.css">
 	</head>
 	<body>
+		<div class="container">
+			<canvas id="myCanvas"></canvas>
+			<button class="meuBotao" id="botao1">Estrutura 1</button>
+			<button class="meuBotao" id="botao2">Tiro ao Alvo</button>
+			<button class="meuBotao" id="botao3"> Voltar </button>
+		</div>
+		
+		
 		<div id="joystick"></div>
 		<div id="score" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 24px;">Pontuação: 0</div>
 

@@ -30,6 +30,7 @@ export function setupControls(camera, baseMesh, cylinderMesh) {
             cylinderMesh.position.x -= 0.09;
             baseMesh.position.x -= 0.09;
             camera.position.x -= 0.09;
+
         }
     }
 

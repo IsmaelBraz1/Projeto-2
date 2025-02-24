@@ -82,3 +82,7 @@ export function createExplosion(position, scene) {
     updateScore(10);// Atualiza a pontuação
     return particleSystem; // Retorna o sistema de partículas
 }
+
+export function atualiScore(valor){
+    score = valor;
+}
