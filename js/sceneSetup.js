@@ -9,10 +9,10 @@ export function setupScene() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const orbit = new OrbitControls(camera, renderer.domElement);
+    //const orbit = new OrbitControls(camera, renderer.domElement);
     camera.position.set(0, 7, -20);
-    camera.lookAt(-15, 0, 0);
-    orbit.update();
+    camera.lookAt(-1, -2, 0);
+   // orbit.update();
 
     window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;

@@ -22,12 +22,14 @@ export function setupControls(camera, baseMesh, cylinderMesh) {
             cylinderMesh.rotation.x += 0.02;
         }
         if (keys.a) {
-            cylinderMesh.position.x -= 0.05;
-            baseMesh.position.x -= 0.05;
+            cylinderMesh.position.x += 0.09;
+            baseMesh.position.x += 0.09;
+            camera.position.x += 0.09;
         }
         if (keys.d) {
-            cylinderMesh.position.x += 0.05;
-            baseMesh.position.x += 0.05;
+            cylinderMesh.position.x -= 0.09;
+            baseMesh.position.x -= 0.09;
+            camera.position.x -= 0.09;
         }
     }
 

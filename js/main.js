@@ -16,7 +16,6 @@ const updateControls = setupControls(camera, baseMesh, cylinderMesh);
 const timeStep = 1 / 60;
 const newSpheres = [];
 let currentStructure = createStructure1(scene, world);
-
 function calculateLaunchDirection() {
     const direction = new THREE.Vector3(0, 1, 0);
     direction.applyQuaternion(cylinderMesh.quaternion);
@@ -29,7 +28,7 @@ window.addEventListener('click', () => {
     position.add(new THREE.Vector3(0, cylinderMesh.geometry.parameters.height / 2, 0).applyQuaternion(cylinderMesh.quaternion));
 
     const newSphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const newSphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const newSphereMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
     const newSphereMesh = new THREE.Mesh(newSphereGeometry, newSphereMaterial);
     newSphereMesh.position.copy(position);
     scene.add(newSphereMesh);
