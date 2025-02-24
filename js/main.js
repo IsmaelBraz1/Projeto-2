@@ -4,20 +4,19 @@ import { setupScene } from './sceneSetup.js';
 import { createCenario } from './cenario.js';
 import { createCylinder } from './arma.js';
 import { setupPhysics } from './physics.js';
-import { setupControls } from './controls.js';
+import { setupControls, reset} from './controls.js';
 import { createStructure1 } from './Estrutura1.js';
 import { remove1 } from './Estrutura1.js';
 import { createStructure2 } from './tiroaoAlvo.js';
 import { remove2 } from './tiroaoAlvo.js';
 import { moviPecas } from './tiroaoAlvo.js';
-import { createExplosion} from './particleSystem.js'; 
-import { atualiScore } from './particleSystem.js';
+import { createExplosion, resetScore} from './particleSystem.js'; 
 const { scene, camera, renderer } = setupScene();
 const { groundMesh } = createCenario(scene);
 const { baseMesh, cylinderMesh } = createCylinder(scene);
 const { world, groundBody } = setupPhysics();
 const updateControls = setupControls(camera, baseMesh, cylinderMesh);
-
+const resetControls = reset(camera, baseMesh, cylinderMesh);
 
 const timeStep = 1 / 60;
 const newSpheres = [];
@@ -33,6 +32,7 @@ document.getElementById("botao1").addEventListener('click', () =>{
     document.getElementById("myCanvas").style.visibility = 'hidden';
     document.getElementById("score").style.visibility = 'visible';
     currentStructure = createStructure1(scene, world);
+    resetControls();
     renderer.setAnimationLoop(animate);
 });
 
@@ -44,6 +44,7 @@ document.getElementById("botao2").addEventListener('click', () =>{
     document.getElementById("myCanvas").style.visibility = 'hidden';
     document.getElementById("score").style.visibility = 'visible';
     currentStructure = createStructure2(scene, world);
+    resetControls();
     renderer.setAnimationLoop(animate);
 });
 
@@ -55,9 +56,7 @@ document.getElementById("botao3").addEventListener('click', () =>{
     document.getElementById("score").style.visibility = 'hidden';
     renderer.setAnimationLoop(null);
     currentStructure = [];
-    atualiScore(0);
-    document.getElementById('score').innerText = `Pontuação: 0`;
-    
+    resetScore();
     verAtual();
 });
 
@@ -121,7 +120,12 @@ function animate() {
    // console.log("Animation frame started");
     world.step(timeStep);
 
-    moviPecas();
+    if(atual == 1)
+        moviPecas();
+
+
+    //baseMesh.position.set(0, 1, -16);
+   //cylinderMesh.position.set(0, 3, -16);
 
     groundMesh.position.copy(groundBody.position);
     groundMesh.quaternion.copy(groundBody.quaternion);
@@ -146,7 +150,6 @@ function animate() {
                     // Acionar sistema de partículas
                     const particleSystem = createExplosion(body.position, scene);
                     console.log("Explosion triggered at position", body.position);
-                  // destroyBlock(scene);
                     // Adicionar bloco à lista para remoção
                     blocksToRemove.push(index);
 

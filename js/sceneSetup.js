@@ -11,7 +11,7 @@ export function setupScene() {
 
     //const orbit = new OrbitControls(camera, renderer.domElement);
     camera.position.set(0, 7, -20);
-    camera.lookAt(-1, -2, 0);
+    camera.lookAt(-1, 0, 0);
    // orbit.update();
 
     window.addEventListener('resize', function () {

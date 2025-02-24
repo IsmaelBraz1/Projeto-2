@@ -83,6 +83,7 @@ export function createExplosion(position, scene) {
     return particleSystem; // Retorna o sistema de partículas
 }
 
-export function atualiScore(valor){
-    score = valor;
+export function resetScore(){
+    score = 0;
+    document.getElementById('score').innerText = `Pontuação: ${0}`;
 }

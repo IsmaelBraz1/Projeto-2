@@ -179,8 +179,6 @@ function criarPecas(scene, world){
     roda.position.set(20,6.5,3);
     scene.add(roda);
 
-    
-
     const rodaShape = new CANNON.Cylinder(4.5,4.5,0.6);
     rodaBody = new CANNON.Body({
         mass: 0.1,
@@ -216,7 +214,7 @@ function criarPecas(scene, world){
 }
 
 export function moviPecas(){
-    roda.rotation.y += 0.05;
+    roda.rotation.y += 0.01;
     rodaBody.position.copy(roda.position);
     rodaBody.quaternion.copy(roda.quaternion);
     if(plate.position.y>15){
@@ -250,11 +248,11 @@ function ObjectsnoCirculo(radius, numObjects,scene,world,centro) {
         centro.add(objectMesh);
         objDinaMesh.push(objectMesh);
 
-        const cubeShape = new CANNON.Box(new CANNON.Vec3(1 / 2, 3 / 2, 1));
+        const cubeShape = new CANNON.Box(new CANNON.Vec3(0.5, 1.5, 1));
         const objectBody = new CANNON.Body({
             mass: 0,
             position: new CANNON.Vec3(x,0,z),
-            shape: cubeShape,
+            shape: cubeShape
         });
         world.addBody(objectBody);
         objDinaBodies.push(objectBody);
