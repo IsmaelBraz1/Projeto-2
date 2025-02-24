@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
+let objectsCena = [];
+let objectsFisic = [];
+
+let objDinaMesh = [];
+let objDinaBodies = [];
+
 export function createStructure1(scene, world) {
     const cubeSize = 1;
     const spacing = 0.1;
@@ -36,11 +42,23 @@ export function createStructure1(scene, world) {
             cubeBody.linearDamping = 0;
             world.addBody(cubeBody);
             cubeBodies.push(cubeBody);
+            
+            objectsCena.push(cubeMesh);
+            objectsFisic.push(cubeBody);
 
             // Log para depuração
             console.log('Cube created:', { cubeMesh, cubeBody });
         }
     }
 
-    return { cubes, cubeBodies };
+    return { cubes, cubeBodies, objDinaMesh, objDinaBodies };
+}
+
+export function remove1(scene, world){
+    for(var i = 0; i <= objectsCena.length; i++){
+        scene.remove(objectsCena[i]);
+    }
+    for(var i = 0; i <= objectsFisic.length; i++){
+        world.removeBody(objectsFisic[i]);
+    }
 }
