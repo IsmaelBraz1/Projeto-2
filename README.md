@@ -1,4 +1,4 @@
-# Projeto-2
+# cannonball game
  
 ## Instalação e Execução
 
