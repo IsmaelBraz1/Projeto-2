@@ -15,10 +15,19 @@ export function createStructure1(scene, world) {
     const rows = 5;
     const columns = 10;
 
-    // Crie um material padrão com fricção
+    // Carregar a textura do alvo
+    const textureLoader = new THREE.TextureLoader();
+    const targetTexture = textureLoader.load('../textura/alvo.jpg'); // Certifique-se de que o arquivo está na pasta correta
+    targetTexture.wrapS = THREE.RepeatWrapping;
+    targetTexture.wrapT = THREE.RepeatWrapping;
+
+    // Criar um material com a textura
+    const cubeMaterial = new THREE.MeshBasicMaterial({ map: targetTexture });
+
+    // Criar um material físico padrão
     const defaultMaterial = new CANNON.Material("defaultMaterial");
     const contactMaterial = new CANNON.ContactMaterial(defaultMaterial, defaultMaterial, {
-        friction: 1,  // Ajuste o valor de fricção conforme necessário
+        friction: 1,
         restitution: 0.01
     });
     world.addContactMaterial(contactMaterial);
@@ -26,39 +35,37 @@ export function createStructure1(scene, world) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < columns; j++) {
             const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-            const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
             const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-            cubeMesh.position.set(j * (cubeSize + spacing) -4, i * (cubeSize + spacing), 0);
+            cubeMesh.position.set(j * (cubeSize + spacing) - 4, i * (cubeSize + spacing), 0);
             scene.add(cubeMesh);
             cubes.push(cubeMesh);
 
             const cubeShape = new CANNON.Box(new CANNON.Vec3(cubeSize / 2, cubeSize / 2, cubeSize / 2));
             const cubeBody = new CANNON.Body({
                 mass: 0.8,
-                position: new CANNON.Vec3(j * (cubeSize + spacing) -4, i * (cubeSize + spacing),0),
+                position: new CANNON.Vec3(j * (cubeSize + spacing) - 4, i * (cubeSize + spacing), 0),
                 shape: cubeShape,
                 material: defaultMaterial
             });
             cubeBody.linearDamping = 0;
             world.addBody(cubeBody);
             cubeBodies.push(cubeBody);
-            
+
             objectsCena.push(cubeMesh);
             objectsFisic.push(cubeBody);
-
-            // Log para depuração
-            console.log('Cube created:', { cubeMesh, cubeBody });
         }
     }
 
     return { cubes, cubeBodies, objDinaMesh, objDinaBodies };
 }
 
-export function remove1(scene, world){
-    for(var i = 0; i <= objectsCena.length; i++){
+export function remove1(scene, world) {
+    for (var i = 0; i < objectsCena.length; i++) {
         scene.remove(objectsCena[i]);
     }
-    for(var i = 0; i <= objectsFisic.length; i++){
+    for (var i = 0; i < objectsFisic.length; i++) {
         world.removeBody(objectsFisic[i]);
     }
+    objectsCena = [];
+    objectsFisic = [];
 }

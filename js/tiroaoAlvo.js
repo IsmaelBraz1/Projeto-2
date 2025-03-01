@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
-import { color } from 'three/tsl';
+import { color, texture } from 'three/tsl';
 
 
 const cubes = [];
@@ -115,24 +115,33 @@ function criarobjetos(alturay, world,scene ){
     var tamy;
     var tamz;
     var color;
+    const textureLoader = new THREE.TextureLoader();
+    const texture1 = textureLoader.load('/textura/cheetos.webp');
+    const texture2 = textureLoader.load('/textura/ovo.webp')
+    const texture3 = textureLoader.load('/textura/pirulito.jpg')
         for (let j = 0; j < 10; j++) {
             var num = Math.random()*3;
            console.log(num);
             if(num <=1){
-                tamx=tamy=tamz=1.5;
-                color = {color: 0xff0f00};
+                tamx=tamz=1.5;
+                tamy=2;
+                color = {map: texture1};
             }else{
                 if(num <= 2){
                     tamx=3;
                     tamy=2;
                     tamz=1;
-                    color = {color: 0xffaa00};
+                    color = {map: texture2};
                 }else{
-                    tamx=0.7;
+                    tamx=1;
                     tamy=2.3;
                     tamz=1;
-                    color = {color: 0xff0077};
+                    color = {map: texture3};
                 }
+            }
+
+            if(tamx===tamy){
+
             }
 
             const cubeGeometry = new THREE.BoxGeometry(tamx,tamy, tamz);
@@ -238,10 +247,11 @@ function ObjectsnoCirculo(radius, numObjects,scene,world,centro) {
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
 
-
+        const textureLoader = new THREE.TextureLoader();
+        const texture4 = textureLoader.load('/textura/alvo.jpg');
         
         const cubeGeometry = new THREE.BoxGeometry(1.3, 1.3,1.5);
-        const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const cubeMaterial = new THREE.MeshBasicMaterial({ map: texture4 });
         const objectMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
         objectMesh.position.set(x, 0,z);
         scene.add(objectMesh);
