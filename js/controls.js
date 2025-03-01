@@ -41,6 +41,7 @@ export function reset(camera, baseMesh, cylinderMesh){
     function resetControls(){
         baseMesh.position.set(0, 1, -16);
         cylinderMesh.position.set(0, 3, -16);
+        cylinderMesh.rotation.x = (Math.PI / 3);
         camera.position.set(0, 7, -20);
     }
     

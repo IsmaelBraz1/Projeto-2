@@ -228,7 +228,7 @@ export function moviPecas(){
     plate.quaternion.copy(plate.quaternion);
 }
 
-function ObjectsnoCirculo(radius, numObjects,scene,world,centro) {
+function ObjectsnoCirculo(radius, numObjects, scene, world, centro) {
     const angleStep = (2 * Math.PI) / numObjects; // Passo angular entre cada objeto
 
     for (let i = 0; i < numObjects; i++) {
@@ -237,27 +237,27 @@ function ObjectsnoCirculo(radius, numObjects,scene,world,centro) {
         // Calcular a posição do objeto
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
-
-
         
-        const cubeGeometry = new THREE.BoxGeometry(1.3, 1.3,1.5);
+        const cubeGeometry = new THREE.BoxGeometry(1.3, 1.3, 1.5);
         const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
         const objectMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        objectMesh.position.set(x, 0,z);
+        objectMesh.position.set(x, 0, z);
         scene.add(objectMesh);
         centro.add(objectMesh);
         objDinaMesh.push(objectMesh);
 
-        const cubeShape = new CANNON.Box(new CANNON.Vec3(0.5, 1.5, 1));
+        // Criar corpo físico com dimensões corretas
+        const cubeShape = new CANNON.Box(new CANNON.Vec3(1.3 / 2, 1.3 / 2, 1.5 / 2));
         const objectBody = new CANNON.Body({
-            mass: 0,
-            position: new CANNON.Vec3(x,0,z),
+            mass: 1, // Ajuste a massa conforme necessário
+            position: new CANNON.Vec3(x, 0, z),
             shape: cubeShape
         });
+        objectBody.quaternion.copy(objectMesh.quaternion); // Copiar orientação
         world.addBody(objectBody);
         objDinaBodies.push(objectBody);
-
         
         objectsCena.push(objectMesh);
         objectsFisic.push(objectBody);
-    }}
+    }
+}

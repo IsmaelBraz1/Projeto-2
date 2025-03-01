@@ -11,7 +11,7 @@ export function createCylinder(scene) {
     const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0x299999, wireframe: false });
     const cylinderMesh = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
     cylinderMesh.position.set(0, 3, -16);
-    cylinderMesh.rotateX(Math.PI / 2);
+   // cylinderMesh.rotateX(Math.PI / 3);
     scene.add(cylinderMesh);
 
     return { baseMesh, cylinderMesh };

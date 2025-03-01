@@ -8,12 +8,12 @@ let objDinaMesh = [];
 let objDinaBodies = [];
 
 export function createStructure1(scene, world) {
-    const cubeSize = 1;
+    const cubeSize = 1.5;
     const spacing = 0.1;
     const cubes = [];
     const cubeBodies = [];
-    const rows = 5;
-    const columns = 10;
+    const rows = 7;
+    const columns = 15;
 
     // Crie um material padrão com fricção
     const defaultMaterial = new CANNON.Material("defaultMaterial");
@@ -28,14 +28,14 @@ export function createStructure1(scene, world) {
             const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
             const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
             const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
-            cubeMesh.position.set(j * (cubeSize + spacing) -4, i * (cubeSize + spacing), 0);
+            cubeMesh.position.set(j * (cubeSize + spacing) -7, i * (cubeSize + spacing), 0);
             scene.add(cubeMesh);
             cubes.push(cubeMesh);
 
             const cubeShape = new CANNON.Box(new CANNON.Vec3(cubeSize / 2, cubeSize / 2, cubeSize / 2));
             const cubeBody = new CANNON.Body({
                 mass: 0.8,
-                position: new CANNON.Vec3(j * (cubeSize + spacing) -4, i * (cubeSize + spacing),0),
+                position: new CANNON.Vec3(j * (cubeSize + spacing) -7, i * (cubeSize + spacing),0),
                 shape: cubeShape,
                 material: defaultMaterial
             });

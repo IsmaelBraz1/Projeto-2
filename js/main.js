@@ -62,10 +62,10 @@ document.getElementById("botao3").addEventListener('click', () =>{
 
 function verAtual(){
     if(atual == 0){
-        const agora = remove1(scene, world);
+         remove1(scene, world);
     }else{
         if(atual == 1){
-           const agora = remove2(scene, world);
+         remove2(scene, world);
         }
     }
 }
@@ -103,8 +103,7 @@ window.addEventListener('click', () => {
     newSphereBody.applyForce(force, new CANNON.Vec3(0, 0, 0));
 
     newSpheres.push({ mesh: newSphereMesh, body: newSphereBody });
-    console.log("New sphere created and added to the scene");
-     //temporizador para remover a bola após 3 segundos
+     //temporizador para remover a bola após 2 segundos
      setTimeout(() => {
         scene.remove(newSphereMesh);
         world.removeBody(newSphereBody);
@@ -112,21 +111,14 @@ window.addEventListener('click', () => {
         if (index > -1) {
             newSpheres.splice(index, 1);
         }
-        console.log("Sphere removed after 3 seconds");
     }, 2000);
 });
 
 function animate() {
-   // console.log("Animation frame started");
     world.step(timeStep);
 
     if(atual == 1)
         moviPecas();
-
-
-    //baseMesh.position.set(0, 1, -16);
-   //cylinderMesh.position.set(0, 3, -16);
-
     groundMesh.position.copy(groundBody.position);
     groundMesh.quaternion.copy(groundBody.quaternion);
 
@@ -146,10 +138,8 @@ function animate() {
             // Verificar colisões com esferas
             newSpheres.forEach(({ body: sphereBody }) => {
                 if (body.position.distanceTo(sphereBody.position) < 1) {
-                    console.log("Collision detected at position:", body.position);
                     // Acionar sistema de partículas
                     const particleSystem = createExplosion(body.position, scene);
-                    console.log("Explosion triggered at position", body.position);
                     // Adicionar bloco à lista para remoção
                     blocksToRemove.push(index);
 
@@ -173,6 +163,5 @@ function animate() {
     updateControls();
 
     renderer.render(scene, camera);
-    //console.log("Animation frame rendered");
 }
 

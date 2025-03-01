@@ -11,7 +11,7 @@ function updateScore(points) {
 export function createExplosion(position, scene) {
     // Cria a geometria do sistema de partículas
     const particles = new THREE.BufferGeometry();
-    const particleCount = 700; // Número de partículas
+    const particleCount = 1000; // Número de partículas
     const positions = new Float32Array(particleCount * 3); // Array para posições das partículas
     const velocities = new Float32Array(particleCount * 3); // Array para velocidades das partículas
 
